@@ -331,6 +331,8 @@ package body PragmARC.Unbounded_Numbers.Rationals is
       (Number => Value ("131072.0"), Square => Value ( "17179869184.0") ),
       (Number => Value ("262144.0"), Square => Value ( "68719476736.0") ),
       (Number => Value ("524288.0"), Square => Value ("274877906944.0") ) );
+
+      square_initialized := True;
   end Initialize_square_list;
 
   Square : aliased Square_List := (1 .. 19 => <>);
