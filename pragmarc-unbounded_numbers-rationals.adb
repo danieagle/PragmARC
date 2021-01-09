@@ -293,7 +293,7 @@ package body PragmARC.Unbounded_Numbers.Rationals is
       Value := (Numerator => Value.Numerator / D, Denominator => Value.Denominator / D);
    end Simplify;
 
-   Two : constant Rational := One + One;
+   function Two return Rational is (One + One) with inline;
 
    type Square_Pair is record
       Number : Rational;
@@ -302,63 +302,80 @@ package body PragmARC.Unbounded_Numbers.Rationals is
 
    type Square_List is array (Positive range <>) of Square_Pair;
 
-   Square : constant Square_List := ( (Number => Value (     "2.0"), Square => Value (           "4.0") ),
-                                      (Number => Value (     "4.0"), Square => Value (          "16.0") ),
-                                      (Number => Value (     "8.0"), Square => Value (          "64.0") ),
-                                      (Number => Value (    "16.0"), Square => Value (         "256.0") ),
-                                      (Number => Value (    "32.0"), Square => Value (        "1024.0") ),
-                                      (Number => Value (    "64.0"), Square => Value (        "4096.0") ),
-                                      (Number => Value (   "128.0"), Square => Value (       "16384.0") ),
-                                      (Number => Value (   "256.0"), Square => Value (       "65536.0") ),
-                                      (Number => Value (   "512.0"), Square => Value (      "262144.0") ),
-                                      (Number => Value (  "1024.0"), Square => Value (     "1048576.0") ),
-                                      (Number => Value (  "2048.0"), Square => Value (     "4194304.0") ),
-                                      (Number => Value (  "4096.0"), Square => Value (    "16777216.0") ),
-                                      (Number => Value (  "8192.0"), Square => Value (    "67108864.0") ),
-                                      (Number => Value ( "16384.0"), Square => Value (   "268435456.0") ),
-                                      (Number => Value ( "32768.0"), Square => Value (  "1073741824.0") ),
-                                      (Number => Value ( "65536.0"), Square => Value (  "4294967296.0") ),
-                                      (Number => Value ("131072.0"), Square => Value ( "17179869184.0") ),
-                                      (Number => Value ("262144.0"), Square => Value ( "68719476736.0") ),
-                                      (Number => Value ("524288.0"), Square => Value ("274877906944.0") ) );
+   square_initialized : Boolean := False with size => 8, atomic;
 
-   function Sqrt (Right : Rational; Accuracy : Rational) return Rational is
-      R : Rational := Right; -- Right after reduction
-      F : Rational := One;   -- Factor after reduction
-      X : Rational;
-      Y : Rational;
-   begin -- Sqrt
-      if Right = Zero then
-         return Zero;
-      end if;
+   procedure Initialize_square_list (Right  : not null access Square_List)
+   is
+   begin
+     if square_initialized then
+       return;
+     end if;
 
-      if Right = One then
-         return One;
-      end if;
+     Right.all :=
+     ( (Number => Value (     "2.0"), Square => Value (           "4.0") ),
+      (Number => Value (     "4.0"), Square => Value (          "16.0") ),
+      (Number => Value (     "8.0"), Square => Value (          "64.0") ),
+      (Number => Value (    "16.0"), Square => Value (         "256.0") ),
+      (Number => Value (    "32.0"), Square => Value (        "1024.0") ),
+      (Number => Value (    "64.0"), Square => Value (        "4096.0") ),
+      (Number => Value (   "128.0"), Square => Value (       "16384.0") ),
+      (Number => Value (   "256.0"), Square => Value (       "65536.0") ),
+      (Number => Value (   "512.0"), Square => Value (      "262144.0") ),
+      (Number => Value (  "1024.0"), Square => Value (     "1048576.0") ),
+      (Number => Value (  "2048.0"), Square => Value (     "4194304.0") ),
+      (Number => Value (  "4096.0"), Square => Value (    "16777216.0") ),
+      (Number => Value (  "8192.0"), Square => Value (    "67108864.0") ),
+      (Number => Value ( "16384.0"), Square => Value (   "268435456.0") ),
+      (Number => Value ( "32768.0"), Square => Value (  "1073741824.0") ),
+      (Number => Value ( "65536.0"), Square => Value (  "4294967296.0") ),
+      (Number => Value ("131072.0"), Square => Value ( "17179869184.0") ),
+      (Number => Value ("262144.0"), Square => Value ( "68719476736.0") ),
+      (Number => Value ("524288.0"), Square => Value ("274877906944.0") ) );
+  end Initialize_square_list;
 
-      Reduce_All : for I in reverse Square'Range loop
-         Reduce_One : loop
-            exit Reduce_One when R < Square (I).Square;
+  Square : aliased Square_List := (1 .. 19 => <>);
 
-            F := F * Square (I).Number;
-            R := R / Square (I).Square;
-         end loop Reduce_One;
-      end loop Reduce_All;
+  function Sqrt (Right : Rational; Accuracy : Rational) return Rational is
+    R : Rational := Right; -- Right after reduction
+    F : Rational := One;   -- Factor after reduction
+    X : Rational;
+    Y : Rational;
+  begin -- Sqrt
+    if Right = Zero then
+       return Zero;
+    end if;
 
-      if R = One then
-         return F;
-      end if;
+    if Right = One then
+       return One;
+    end if;
 
-      X := R / Two;
+    if not square_initialized then
+      Initialize_square_list (Square'Access);
+    end if;
 
-      All_Iterations : for I in 1 .. 15 loop
-         Y := R / X;
+    Reduce_All : for I in reverse Square'Range loop
+       Reduce_One : loop
+          exit Reduce_One when R < Square (I).Square;
 
-         exit All_Iterations when abs (Y - X) < Accuracy * X;
+          F := F * Square (I).Number;
+          R := R / Square (I).Square;
+       end loop Reduce_One;
+    end loop Reduce_All;
 
-         X := (X + Y) / Two;
-      end loop All_Iterations;
+    if R = One then
+       return F;
+    end if;
 
-      return F * X;
-   end Sqrt;
+    X := R / Two;
+
+    All_Iterations : for I in 1 .. 15 loop
+       Y := R / X;
+
+       exit All_Iterations when abs (Y - X) < Accuracy * X;
+
+       X := (X + Y) / Two;
+    end loop All_Iterations;
+
+    return F * X;
+  end Sqrt;
 end PragmARC.Unbounded_Numbers.Rationals;
