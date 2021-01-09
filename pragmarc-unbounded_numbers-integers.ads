@@ -17,7 +17,7 @@ pragma Unsuppress (All_Checks);
 private with Ada.Containers.Vectors;
 private with System;
 
-package PragmARC.Unbounded_Numbers.Integers is
+package PragmARC.Unbounded_Numbers.Integers with preelaborate is
    type Unbounded_Integer is private;
    -- Default initial value is zero
 
