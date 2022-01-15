@@ -1,11 +1,11 @@
 -- PragmAda Reusable Component (PragmARC)
--- Copyright (C) 2021 by PragmAda Software Engineering.  All rights reserved.
+-- Copyright (C) 2022 by PragmAda Software Engineering.  All rights reserved.
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
--- 2022 Jan 15     Daniel N.     V1.2--Initial 1024bit version
--- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
--- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
+-- 2022 Jan 15     D. Norte de Moraes     V1.2--Initial 1024-bits version
+-- 2021 May 01     J. Carter              V1.1--Adhere to coding standard
+-- 2021 Feb 01     J. Carter              V1.0--Initial PragmARC version
 --
 with Ada.Unchecked_Conversion;
 with System;
@@ -61,9 +61,9 @@ package body PragmARC.Encryption.Threefish_1024 is
       procedure Mix (Round : in Round_Id; Side : in Eight_Id; Pair : in out Couple); -- Performs the MIX operation in place
 
       function "+" (Left : Block; Right : Block) return Block is
-         (Left (0) + Right (0), Left (1) + Right (1), Left (2) + Right (2), Left (3) + Right (3),
-          Left (4) + Right (4), Left (5) + Right (5), Left (6) + Right (6), Left (7) + Right (7),
-          Left (8) + Right (8), Left (9) + Right (9), Left (10) + Right (10), Left (11) + Right (11),
+         (Left ( 0) + Right ( 0), Left ( 1) + Right ( 1), Left ( 2) + Right ( 2), Left ( 3) + Right ( 3),
+          Left ( 4) + Right ( 4), Left ( 5) + Right ( 5), Left ( 6) + Right ( 6), Left ( 7) + Right ( 7),
+          Left ( 8) + Right ( 8), Left ( 9) + Right ( 9), Left (10) + Right (10), Left (11) + Right (11),
           Left (12) + Right (12), Left (13) + Right (13), Left (14) + Right (14), Left (15) + Right (15) );
 
       procedure Mix (Round : in Round_Id; Side : in Eight_Id; Pair : in out Couple) is
@@ -80,11 +80,11 @@ package body PragmARC.Encryption.Threefish_1024 is
             Text := Text + Ks.Subkey (Round / 4);
          end if;
 
-         Mix (Round => Round, Side => First,    Pair => Text (0  ..  1) );
-         Mix (Round => Round, Side => Second,   Pair => Text (2  ..  3) );
-         Mix (Round => Round, Side => Third,    Pair => Text (4  ..  5) );
-         Mix (Round => Round, Side => Fourth,   Pair => Text (6  ..  7) );
-         Mix (Round => Round, Side => Fifth,    Pair => Text (8  ..  9) );
+         Mix (Round => Round, Side => First,    Pair => Text ( 0 .. 1) );
+         Mix (Round => Round, Side => Second,   Pair => Text ( 2 .. 3) );
+         Mix (Round => Round, Side => Third,    Pair => Text ( 4 .. 5) );
+         Mix (Round => Round, Side => Fourth,   Pair => Text ( 6 .. 7) );
+         Mix (Round => Round, Side => Fifth,    Pair => Text ( 8 .. 9) );
          Mix (Round => Round, Side => Sixth,    Pair => Text (10 .. 11) );
          Mix (Round => Round, Side => Seventh,  Pair => Text (12 .. 13) );
          Mix (Round => Round, Side => Last,     Pair => Text (14 .. 15) );
@@ -100,9 +100,9 @@ package body PragmARC.Encryption.Threefish_1024 is
       procedure Unmix (Round : in Round_Id; Side : in Eight_Id; Pair : in out Couple); -- Inverse of the Mix procedure
 
       function "-" (Left : Block; Right : Block) return Block is
-        (Left (0) - Right (0), Left (1) - Right (1), Left (2) - Right (2), Left (3) - Right (3),
-         Left (4) - Right (4), Left (5) - Right (5), Left (6) - Right (6), Left (7) - Right (7),
-         Left (8) - Right (8), Left (9) - Right (9), Left (10) - Right (10), Left (11) - Right (11),
+        (Left ( 0) - Right ( 0), Left ( 1) - Right ( 1), Left ( 2) - Right ( 2), Left ( 3) - Right ( 3),
+         Left ( 4) - Right ( 4), Left ( 5) - Right ( 5), Left ( 6) - Right ( 6), Left ( 7) - Right ( 7),
+         Left ( 8) - Right ( 8), Left ( 9) - Right ( 9), Left (10) - Right (10), Left (11) - Right (11),
          Left (12) - Right (12), Left (13) - Right (13), Left (14) - Right (14), Left (15) - Right (15) );
 
       procedure Unmix (Round : in Round_Id; Side : in Eight_Id; Pair : in out Couple) is
@@ -121,11 +121,11 @@ package body PragmARC.Encryption.Threefish_1024 is
          Unmix (Round => Round, Side => Last,     Pair => Text (14 .. 15) );
          Unmix (Round => Round, Side => Seventh,  Pair => Text (12 .. 13) );
          Unmix (Round => Round, Side => Sixth,    Pair => Text (10 .. 11) );
-         Unmix (Round => Round, Side => Fifth,    Pair => Text (8  ..  9) );
-         Unmix (Round => Round, Side => Fourth,   Pair => Text (6  ..  7) );
-         Unmix (Round => Round, Side => Third,    Pair => Text (4  ..  5) );
-         Unmix (Round => Round, Side => Second,   Pair => Text (2  ..  3) );
-         Unmix (Round => Round, Side => First,    Pair => Text (0  ..  1) );
+         Unmix (Round => Round, Side => Fifth,    Pair => Text ( 8 .. 9) );
+         Unmix (Round => Round, Side => Fourth,   Pair => Text ( 6 .. 7) );
+         Unmix (Round => Round, Side => Third,    Pair => Text ( 4 .. 5) );
+         Unmix (Round => Round, Side => Second,   Pair => Text ( 2 .. 3) );
+         Unmix (Round => Round, Side => First,    Pair => Text ( 0 .. 1) );
 
          if Round rem 4 = 0 then
             Text := Text - Ks.Subkey (Round / 4);
@@ -228,12 +228,12 @@ package body PragmARC.Encryption.Threefish_1024 is
    end Bytes_From_Block;
 
    procedure Permute (Text : in out Block) is
-      Temp1     : constant Word := Text (1);
-      Temp3     : constant Word := Text (3);
-      Temp4     : constant Word := Text (4);
-      Temp5     : constant Word := Text (5);
-      Temp7     : constant Word := Text (7);
-      Temp8     : constant Word := Text (8);
+      Temp1 : constant Word := Text (1);
+      Temp3 : constant Word := Text (3);
+      Temp4 : constant Word := Text (4);
+      Temp5 : constant Word := Text (5);
+      Temp7 : constant Word := Text (7);
+      Temp8 : constant Word := Text (8);
    begin -- Permute
       Text ( 1) := Text ( 9);
       Text ( 3) := Text (13);

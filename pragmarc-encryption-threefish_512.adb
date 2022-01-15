@@ -1,11 +1,11 @@
 -- PragmAda Reusable Component (PragmARC)
--- Copyright (C) 2021 by PragmAda Software Engineering.  All rights reserved.
+-- Copyright (C) 2022 by PragmAda Software Engineering.  All rights reserved.
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
--- 2022 Jan 15     Daniel N.     V1.2--Initial 512bit version
--- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
--- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
+-- 2022 Jan 15     D. Norte de Moraes     V1.2--Initial 512-bits version
+-- 2021 May 01     J. Carter              V1.1--Adhere to coding standard
+-- 2021 Feb 01     J. Carter              V1.0--Initial PragmARC version
 --
 with Ada.Unchecked_Conversion;
 with System;
@@ -215,8 +215,8 @@ package body PragmARC.Encryption.Threefish_512 is
    end Bytes_From_Block;
 
    procedure Permute (Text : in out Block) is
-      Temp0     : constant Word := Text (0);
-      Temp3     : constant Word := Text (3);
+      Temp0 : constant Word := Text (0);
+      Temp3 : constant Word := Text (3);
    begin -- Permute
       Text (0)  := Text (2);
       Text (2)  := Text (4);

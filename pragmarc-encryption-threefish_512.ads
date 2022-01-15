@@ -1,13 +1,13 @@
 -- PragmAda Reusable Component (PragmARC)
--- Copyright (C) 2021 by PragmAda Software Engineering.  All rights reserved.
+-- Copyright (C) 2022 by PragmAda Software Engineering.  All rights reserved.
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
--- Implementation of the Threefish cipher for blocks of 512 bits (Threefish-512)
+-- Implementation of the Threefish cipher for blocks of 512-bits (Threefish_512)
 --
--- 2022 Jan 15     Daniel N.     V1.2--Initial 512bit version
--- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
--- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
+-- 2022 Jan 15     D. Norte de Moraes     V1.2--Initial 512-bits version
+-- 2021 May 01     J. Carter              V1.1--Adhere to coding standard
+-- 2021 Feb 01     J. Carter              V1.0--Initial PragmARC version
 --
 with Interfaces;
 
