@@ -3,8 +3,9 @@
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
--- Implementeation of the Threefish cipher for blocks of 256 bits (Threefish-256)
+-- Implementeation of the Threefish cipher for blocks of 1024 bits (Threefish-1024)
 --
+-- 2022 Jan 15     Daniel N.     V1.2--Initial 1024bit version
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
@@ -14,7 +15,7 @@ package PragmARC.Encryption.Threefish_1024 is
    subtype Word is Interfaces.Unsigned_64;
 
    type Word_List is array (Natural range <>) of Word;
-   -- The Threefixh specification uses zeor-based indexing
+   -- The Threefish specification uses zero-based indexing
 
    Num_Words : constant := 16; -- A block is Num_Words words
 
@@ -53,7 +54,7 @@ package PragmARC.Encryption.Threefish_1024 is
 
    function Encrypt (Key_Schedule : in Key_Schedule_Handle; Text : in Byte_List) return Block_List with
       Pre => Valid (Key_Schedule);
-   -- Pads Text to a multiple of 64 bytes with zeros, then converts 128-byte slices using Block_From_Bytes and Key_Schedule
+   -- Pads Text to a multiple of 128 bytes with zeros, then converts 128-byte slices using Block_From_Bytes and Key_Schedule
 
    function Decrypt (Key_Schedule : in Key_Schedule_Handle; Text : in Block_List) return Byte_List with
       Pre => Valid (Key_Schedule);

@@ -3,6 +3,7 @@
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
+-- 2022 Jan 15     Daniel N.     V1.2--Initial 1024bit version
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
@@ -45,14 +46,14 @@ package body PragmARC.Encryption.Threefish_1024 is
    type Rotation_Amount is array (0 .. 7, Eight_Id) of Positive; -- Indexed by Round mod 8
 
    Rot : constant Rotation_Amount :=
-     (0 => (First => 24, Second => 13, Third =>  8, Fourth => 47, Fifth =>  8, Sixth => 17, Seventh => 22, Last => 37),
-      1 => (First => 38, Second => 19, Third => 10, Fourth => 55, Fifth => 49, Sixth => 18, Seventh => 23, Last => 52),
-      2 => (First => 33, Second =>  4, Third => 51, Fourth => 13, Fifth => 34, Sixth => 41, Seventh => 59, Last => 17),
-      3 => (First =>  5, Second => 20, Third => 48, Fourth => 41, Fifth => 47, Sixth => 28, Seventh => 16, Last => 25),
-      4 => (First => 41, Second =>  9, Third => 37, Fourth => 31, Fifth => 12, Sixth => 47, Seventh => 44, Last => 30),
-      5 => (First => 16, Second => 34, Third => 56, Fourth => 51, Fifth =>  4, Sixth => 53, Seventh => 42, Last => 41),
-      6 => (First => 31, Second => 44, Third => 47, Fourth => 46, Fifth => 19, Sixth => 42, Seventh => 44, Last => 25),
-      7 => (First => 9, Second => 48, Third => 35, Fourth => 52, Fifth => 23, Sixth => 31, Seventh => 37, Last => 20) );
+      (0 => (First => 24, Second => 13, Third =>  8, Fourth => 47, Fifth =>  8, Sixth => 17, Seventh => 22, Last => 37),
+       1 => (First => 38, Second => 19, Third => 10, Fourth => 55, Fifth => 49, Sixth => 18, Seventh => 23, Last => 52),
+       2 => (First => 33, Second =>  4, Third => 51, Fourth => 13, Fifth => 34, Sixth => 41, Seventh => 59, Last => 17),
+       3 => (First =>  5, Second => 20, Third => 48, Fourth => 41, Fifth => 47, Sixth => 28, Seventh => 16, Last => 25),
+       4 => (First => 41, Second =>  9, Third => 37, Fourth => 31, Fifth => 12, Sixth => 47, Seventh => 44, Last => 30),
+       5 => (First => 16, Second => 34, Third => 56, Fourth => 51, Fifth =>  4, Sixth => 53, Seventh => 42, Last => 41),
+       6 => (First => 31, Second => 44, Third => 47, Fourth => 46, Fifth => 19, Sixth => 42, Seventh => 44, Last => 25),
+       7 => (First =>  9, Second => 48, Third => 35, Fourth => 52, Fifth => 23, Sixth => 31, Seventh => 37, Last => 20) );
 
    procedure Encrypt (Key_Schedule : in Key_Schedule_Handle; Text : in out Block; Last_Round : in Round_ID := Round_ID'Last) is
       function "+" (Left : Block; Right : Block) return Block; -- Word-by-word addition without carry
@@ -79,11 +80,11 @@ package body PragmARC.Encryption.Threefish_1024 is
             Text := Text + Ks.Subkey (Round / 4);
          end if;
 
-         Mix (Round => Round, Side => First,    Pair => Text (0 .. 1) );
-         Mix (Round => Round, Side => Second,   Pair => Text (2 .. 3) );
-         Mix (Round => Round, Side => Third,    Pair => Text (4 .. 5) );
-         Mix (Round => Round, Side => Fourth,   Pair => Text (6 .. 7) );
-         Mix (Round => Round, Side => Fifth,    Pair => Text (8 .. 9) );
+         Mix (Round => Round, Side => First,    Pair => Text (0  ..  1) );
+         Mix (Round => Round, Side => Second,   Pair => Text (2  ..  3) );
+         Mix (Round => Round, Side => Third,    Pair => Text (4  ..  5) );
+         Mix (Round => Round, Side => Fourth,   Pair => Text (6  ..  7) );
+         Mix (Round => Round, Side => Fifth,    Pair => Text (8  ..  9) );
          Mix (Round => Round, Side => Sixth,    Pair => Text (10 .. 11) );
          Mix (Round => Round, Side => Seventh,  Pair => Text (12 .. 13) );
          Mix (Round => Round, Side => Last,     Pair => Text (14 .. 15) );
@@ -120,11 +121,11 @@ package body PragmARC.Encryption.Threefish_1024 is
          Unmix (Round => Round, Side => Last,     Pair => Text (14 .. 15) );
          Unmix (Round => Round, Side => Seventh,  Pair => Text (12 .. 13) );
          Unmix (Round => Round, Side => Sixth,    Pair => Text (10 .. 11) );
-         Unmix (Round => Round, Side => Fifth,    Pair => Text (8 .. 9) );
-         Unmix (Round => Round, Side => Fourth,   Pair => Text (6 .. 7) );
-         Unmix (Round => Round, Side => Third,    Pair => Text (4 .. 5) );
-         Unmix (Round => Round, Side => Second,   Pair => Text (2 .. 3) );
-         Unmix (Round => Round, Side => First,    Pair => Text (0 .. 1) );
+         Unmix (Round => Round, Side => Fifth,    Pair => Text (8  ..  9) );
+         Unmix (Round => Round, Side => Fourth,   Pair => Text (6  ..  7) );
+         Unmix (Round => Round, Side => Third,    Pair => Text (4  ..  5) );
+         Unmix (Round => Round, Side => Second,   Pair => Text (2  ..  3) );
+         Unmix (Round => Round, Side => First,    Pair => Text (0  ..  1) );
 
          if Round rem 4 = 0 then
             Text := Text - Ks.Subkey (Round / 4);
@@ -227,21 +228,21 @@ package body PragmARC.Encryption.Threefish_1024 is
    end Bytes_From_Block;
 
    procedure Permute (Text : in out Block) is
-      Temp1  : constant Word := Text (1);
-      Temp3  : constant Word := Text (3);
-      Temp4  : constant Word := Text (4);
-      Temp5  : constant Word := Text (5);
-      Temp7  : constant Word := Text (7);
-      Temp8  : constant Word := Text (8);
+      Temp1     : constant Word := Text (1);
+      Temp3     : constant Word := Text (3);
+      Temp4     : constant Word := Text (4);
+      Temp5     : constant Word := Text (5);
+      Temp7     : constant Word := Text (7);
+      Temp8     : constant Word := Text (8);
    begin -- Permute
-      Text (1) := Text (9);
-      Text (3) := Text (13);
-      Text (4) := Text (6);
-      Text (5) := Text (11);
-      Text (6) := Temp4;
-      Text (7) := Text (15);
-      Text (8) := Text (10);
-      Text (9) := Temp7;
+      Text ( 1) := Text ( 9);
+      Text ( 3) := Text (13);
+      Text ( 4) := Text ( 6);
+      Text ( 5) := Text (11);
+      Text ( 6) := Temp4;
+      Text ( 7) := Text (15);
+      Text ( 8) := Text (10);
+      Text ( 9) := Temp7;
       Text (10) := Text (12);
       Text (11) := Temp3;
       Text (12) := Text (14);

@@ -3,13 +3,14 @@
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
+-- 2022 Jan 15     Daniel N.     V1.2--Initial 512bit version
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
 with Ada.Unchecked_Conversion;
 with System;
 
-package body PragmARC.Encryption.Threefish is
+package body PragmARC.Encryption.Threefish_512 is
    use type Word;
 
    procedure Create_Key_Schedule (Key : in Block; Tweak : in Couple; Key_Schedule : out Key_Schedule_Handle) is
@@ -51,7 +52,7 @@ package body PragmARC.Encryption.Threefish is
                                       4 => (First => 39, Second => 30, Third => 34, Last => 24),
                                       5 => (First => 13, Second => 50, Third => 10, Last => 17),
                                       6 => (First => 25, Second => 29, Third => 39, Last => 43),
-                                      7 => (First => 8, Second => 35, Third => 56, Last => 22) );
+                                      7 => (First =>  8, Second => 35, Third => 56, Last => 22) );
 
    procedure Encrypt (Key_Schedule : in Key_Schedule_Handle; Text : in out Block; Last_Round : in Round_ID := Round_ID'Last) is
       function "+" (Left : Block; Right : Block) return Block; -- Word-by-word addition without carry
@@ -214,15 +215,15 @@ package body PragmARC.Encryption.Threefish is
    end Bytes_From_Block;
 
    procedure Permute (Text : in out Block) is
-      Temp0  : constant Word := Text (0);
-      Temp3  : constant Word := Text (3);
+      Temp0     : constant Word := Text (0);
+      Temp3     : constant Word := Text (3);
    begin -- Permute
-      Text (0) := Text (2);
-      Text (2) := Text (4);
-      Text (3) := Text (7);
-      Text (4) := Text (6);
-      Text (6) := Temp0;
-      Text (7) := Temp3;
+      Text (0)  := Text (2);
+      Text (2)  := Text (4);
+      Text (3)  := Text (7);
+      Text (4)  := Text (6);
+      Text (6)  := Temp0;
+      Text (7)  := Temp3;
    end Permute;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes) is
@@ -243,4 +244,4 @@ package body PragmARC.Encryption.Threefish is
          Last := Last - 1;
       end loop Swap_All;
    end Reverse_Bytes;
-end PragmARC.Encryption.Threefish;
+end PragmARC.Encryption.Threefish_512;

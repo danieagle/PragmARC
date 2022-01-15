@@ -3,18 +3,19 @@
 -- Released under the terms of the BSD 3-Clause license; see https://opensource.org/licenses
 -- **************************************************************************
 --
--- Implementeation of the Threefish cipher for blocks of 256 bits (Threefish-256)
+-- Implementation of the Threefish cipher for blocks of 512 bits (Threefish-512)
 --
+-- 2022 Jan 15     Daniel N.     V1.2--Initial 512bit version
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
 with Interfaces;
 
-package PragmARC.Encryption.Threefish is
+package PragmARC.Encryption.Threefish_512 is
    subtype Word is Interfaces.Unsigned_64;
 
    type Word_List is array (Natural range <>) of Word;
-   -- The Threefixh specification uses zeor-based indexing
+   -- The Threefish specification uses zero-based indexing
 
    Num_Words : constant := 8; -- A block is Num_Words words
 
@@ -82,4 +83,4 @@ private -- PragmARC.Encryption.Threefish
 
    function Valid (Key_Schedule : in Key_Schedule_Handle) return Boolean is
       (Key_Schedule.Valid);
-end PragmARC.Encryption.Threefish;
+end PragmARC.Encryption.Threefish_512;
