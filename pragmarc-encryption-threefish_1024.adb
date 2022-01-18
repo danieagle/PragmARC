@@ -30,16 +30,30 @@ package body PragmARC.Encryption.Threefish_1024 is
       Ks.Tweak (Ks.Tweak'Last) := Tweak (Tweak'First) xor Tweak (Tweak'Last);
 
       All_Subkeys : for S in Ks.Subkey'Range loop
-         Ks.Subkey (S) (0) := Ks.Key (S rem Modulus);
-         Ks.Subkey (S) (1) := Ks.Key ( (S + 1) rem Modulus) + Ks.Tweak (S rem 3);
-         Ks.Subkey (S) (2) := Ks.Key ( (S + 2) rem Modulus) + Ks.Tweak ( (S + 1) rem 3);
-         Ks.Subkey (S) (3) := Ks.Key ( (S + 3) rem Modulus) + Word (S);
+         Ks.Subkey (S) ( 0) := Ks.Key (S rem Modulus);
+         Ks.Subkey (S) ( 1) := Ks.Key ( (S + 1) rem Modulus);
+         Ks.Subkey (S) ( 2) := Ks.Key ( (S + 2) rem Modulus);
+         Ks.Subkey (S) ( 3) := Ks.Key ( (S + 3) rem Modulus);
+         Ks.Subkey (S) ( 4) := Ks.Key ( (S + 4) rem Modulus);
+         Ks.Subkey (S) ( 5) := Ks.Key ( (S + 5) rem Modulus);
+         Ks.Subkey (S) ( 6) := Ks.Key ( (S + 6) rem Modulus);
+         Ks.Subkey (S) ( 7) := Ks.Key ( (S + 7) rem Modulus);
+         Ks.Subkey (S) ( 8) := Ks.Key ( (S + 8) rem Modulus);
+         Ks.Subkey (S) ( 9) := Ks.Key ( (S + 9) rem Modulus);
+         Ks.Subkey (S) (10) := Ks.Key ( (S + 10) rem Modulus);
+         Ks.Subkey (S) (11) := Ks.Key ( (S + 11) rem Modulus);
+         Ks.Subkey (S) (12) := Ks.Key ( (S + 12) rem Modulus);
+
+         Ks.Subkey (S) (13) := Ks.Key ( (S + 13) rem Modulus) + Ks.Tweak (S rem 3);
+         Ks.Subkey (S) (14) := Ks.Key ( (S + 14) rem Modulus) + Ks.Tweak ( (S + 1) rem 3);
+         Ks.Subkey (S) (15) := Ks.Key ( (S + 15) rem Modulus) + Word (S);
       end loop All_Subkeys;
 
       Ks.Valid := True;
    end Create_Key_Schedule;
 
-   procedure Permute (Text : in out Block); -- Same for en- and de-cryption
+   procedure Permute (Text : in out Block);
+   procedure Decrypt_Permute (Text : in out Block);
 
    type Eight_Id is (First, Second, Third, Fourth, Fifth, Sixth, Seventh, Last); -- 8 pairs per Block
 
@@ -117,7 +131,7 @@ package body PragmARC.Encryption.Threefish_1024 is
       Text := Text - Ks.Subkey (Num_Rounds / 4);
 
       All_Rounds : for Round in reverse Round_Id loop
-         Permute (Text => Text);
+         Decrypt_Permute (Text => Text);
          Unmix (Round => Round, Side => Last,     Pair => Text (14 .. 15) );
          Unmix (Round => Round, Side => Seventh,  Pair => Text (12 .. 13) );
          Unmix (Round => Round, Side => Sixth,    Pair => Text (10 .. 11) );
@@ -250,6 +264,32 @@ package body PragmARC.Encryption.Threefish_1024 is
       Text (14) := Temp8;
       Text (15) := Temp1;
    end Permute;
+
+   procedure Decrypt_Permute (Text : in out Block) is
+      Temp9  : constant Word := Text (9);
+      Temp13 : constant Word := Text (13);
+      Temp6  : constant Word := Text (6);
+      Temp11 : constant Word := Text (11);
+      Temp15 : constant Word := Text (15);
+      Temp10 : constant Word := Text (10);
+      Temp12 : constant Word := Text (12);
+      Temp14 : constant Word := Text (14);
+   begin -- Decrypt_Permute
+      Text ( 9) := Text ( 1);
+      Text (13) := Text ( 3);
+      Text ( 6) := Text ( 4);
+      Text (11) := Text ( 5);
+      Text ( 4) := Temp6;
+      Text (15) := Text ( 7);
+      Text (10) := Text ( 8);
+      Text ( 7) := Temp9;
+      Text (12) := Temp10;
+      Text ( 3) := Temp11;
+      Text (14) := Temp12;
+      Text ( 5) := Temp13;
+      Text ( 8) := Temp14;
+      Text ( 1) := Temp15;
+   end Decrypt_Permute;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes) is
       procedure Swap (Left : in out Byte; Right : in out Byte);

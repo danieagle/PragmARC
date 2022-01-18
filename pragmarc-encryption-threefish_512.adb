@@ -29,7 +29,7 @@ package body PragmARC.Encryption.Threefish_512 is
 
       Ks.Tweak (Ks.Tweak'Last) := Tweak (Tweak'First) xor Tweak (Tweak'Last);
 
-      All_Subkeys : for S in Ks.Subkey'Range loop -- 7 or 3 ?
+      All_Subkeys : for S in Ks.Subkey'Range loop
          Ks.Subkey (S) (0) := Ks.Key (S rem Modulus);
          Ks.Subkey (S) (1) := Ks.Key ( (S + 1) rem Modulus);
          Ks.Subkey (S) (2) := Ks.Key ( (S + 2) rem Modulus);
@@ -43,8 +43,8 @@ package body PragmARC.Encryption.Threefish_512 is
       Ks.Valid := True;
    end Create_Key_Schedule;
 
-   procedure Permute (Text : in out Block); -- Same for en- and de-cryption
-   procedure Decrypt_Permute (Text : in out Block); -- Same for en- and de-cryption
+   procedure Permute (Text : in out Block);
+   procedure Decrypt_Permute (Text : in out Block);
 
    type Four_Id is (First, Second, Third, Last); -- 4 pairs per Block
 
@@ -236,7 +236,7 @@ package body PragmARC.Encryption.Threefish_512 is
       Temp4 : constant Word := Text (4);
       Temp6 : constant Word := Text (6);
       Temp7 : constant Word := Text (7);
-   begin -- Permute
+   begin -- Decrypt_Permute
       Text (2)  := Text (0);
       Text (4)  := Temp2;
       Text (7)  := Text (3);
