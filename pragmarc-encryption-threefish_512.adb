@@ -44,6 +44,7 @@ package body PragmARC.Encryption.Threefish_512 is
    end Create_Key_Schedule;
 
    procedure Permute (Text : in out Block); -- Same for en- and de-cryption
+   procedure Decrypt_Permute (Text : in out Block); -- Same for en- and de-cryption
 
    type Four_Id is (First, Second, Third, Last); -- 4 pairs per Block
 
@@ -112,7 +113,7 @@ package body PragmARC.Encryption.Threefish_512 is
       Text := Text - Ks.Subkey (Num_Rounds / 4);
 
       All_Rounds : for Round in reverse Round_Id loop
-         Permute (Text => Text);
+         Decrypt_Permute (Text => Text);
          Unmix (Round => Round, Side => Last,   Pair => Text (6 .. 7) );
          Unmix (Round => Round, Side => Third,  Pair => Text (4 .. 5) );
          Unmix (Round => Round, Side => Second, Pair => Text (2 .. 3) );
@@ -229,6 +230,20 @@ package body PragmARC.Encryption.Threefish_512 is
       Text (6)  := Temp0;
       Text (7)  := Temp3;
    end Permute;
+
+   procedure Decrypt_Permute (Text : in out Block) is
+      Temp2 : constant Word := Text (2);
+      Temp4 : constant Word := Text (4);
+      Temp6 : constant Word := Text (6);
+      Temp7 : constant Word := Text (7);
+   begin -- Permute
+      Text (2)  := Text (0);
+      Text (4)  := Temp2;
+      Text (7)  := Text (3);
+      Text (6)  := Temp4;
+      Text (0)  := Temp6;
+      Text (3)  := Temp7;
+   end Decrypt_Permute;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes) is
       procedure Swap (Left : in out Byte; Right : in out Byte);
