@@ -29,11 +29,15 @@ package body PragmARC.Encryption.Threefish_512 is
 
       Ks.Tweak (Ks.Tweak'Last) := Tweak (Tweak'First) xor Tweak (Tweak'Last);
 
-      All_Subkeys : for S in Ks.Subkey'Range loop
+      All_Subkeys : for S in Ks.Subkey'Range loop -- 7 or 3 ?
          Ks.Subkey (S) (0) := Ks.Key (S rem Modulus);
-         Ks.Subkey (S) (1) := Ks.Key ( (S + 1) rem Modulus) + Ks.Tweak (S rem 3);
-         Ks.Subkey (S) (2) := Ks.Key ( (S + 2) rem Modulus) + Ks.Tweak ( (S + 1) rem 3);
-         Ks.Subkey (S) (3) := Ks.Key ( (S + 3) rem Modulus) + Word (S);
+         Ks.Subkey (S) (1) := Ks.Key ( (S + 1) rem Modulus);
+         Ks.Subkey (S) (2) := Ks.Key ( (S + 2) rem Modulus);
+         Ks.Subkey (S) (3) := Ks.Key ( (S + 3) rem Modulus);
+         Ks.Subkey (S) (4) := Ks.Key ( (S + 4) rem Modulus);
+         Ks.Subkey (S) (5) := Ks.Key ( (S + 5) rem Modulus) + Ks.Tweak (S rem 3);
+         Ks.Subkey (S) (6) := Ks.Key ( (S + 6) rem Modulus) + Ks.Tweak ( (S + 1) rem 3);
+         Ks.Subkey (S) (7) := Ks.Key ( (S + 7) rem Modulus) + Word (S);
       end loop All_Subkeys;
 
       Ks.Valid := True;
