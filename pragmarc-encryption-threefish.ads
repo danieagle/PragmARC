@@ -10,7 +10,7 @@
 --
 with Interfaces;
 
-package PragmARC.Encryption.Threefish is
+package PragmARC.Encryption.Threefish with preelaborate is
    subtype Word is Interfaces.Unsigned_64;
 
    type Word_List is array (Natural range <>) of Word;
@@ -21,8 +21,8 @@ package PragmARC.Encryption.Threefish is
    subtype Block  is Word_List (0 .. Num_Words - 1);
    subtype Couple is Word_List (0 .. 1);
 
-   type Key_Schedule_Handle is limited private; -- Initial value: not Valid
-
+   type Key_Schedule_Handle is limited private -- Initial value: not Valid
+      with preelaborable_initialization;
    function Valid (Key_Schedule : in Key_Schedule_Handle) return Boolean;
    -- Returns True if Key_Schedule has been created by Create_Key_Schedule; False otherwise
 

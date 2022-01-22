@@ -9,7 +9,7 @@
 with Ada.Unchecked_Conversion;
 with System;
 
-package body PragmARC.Encryption.Threefish is
+package body PragmARC.Encryption.Threefish with preelaborate is
    use type Word;
 
    procedure Create_Key_Schedule (Key : in Block; Tweak : in Couple; Key_Schedule : out Key_Schedule_Handle) is
