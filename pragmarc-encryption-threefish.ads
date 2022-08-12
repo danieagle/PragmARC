@@ -11,7 +11,7 @@
 --
 with Interfaces;
 
-package PragmARC.Encryption.Threefish is
+package PragmARC.Encryption.Threefish with pure is
    subtype Word is Interfaces.Unsigned_64;
 
    type Word_List is array (Natural range <>) of Word;
@@ -26,6 +26,17 @@ package PragmARC.Encryption.Threefish is
    subtype Word_As_Bytes is Byte_List (1 ..  8); -- 1 => LSB, 8 => MSB
 
    function Word_From_Bytes (List : in Word_As_Bytes) return Word;
+   -- 1) Endian-independent conversion.
+   -- 2) This is a pure function because always return the same value.
+   -- 3) Compiled programs will return the same value for the _same system_
+   --       regardless of whether the system is big endian or lillte endian.
+   -- Enjoy!!
+
    function Bytes_From_Word (Value : in Word) return Word_As_Bytes;
-   -- Endian-independent conversions
+   -- 1) Endian-independent conversion.
+   -- 2) This is a pure function because always return the same value.
+   -- 3) Compiled programs will return the same value for the _same system_
+   --       regardless of whether the system is big endian or lillte endian.
+   -- Enjoy!!
+
 end PragmARC.Encryption.Threefish;

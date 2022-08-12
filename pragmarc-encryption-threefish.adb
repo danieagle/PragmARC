@@ -7,37 +7,50 @@
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
-with Ada.Unchecked_Conversion;
+-- with Ada.Unchecked_Conversion;
 with System;
 
-package body PragmARC.Encryption.Threefish is
+package body PragmARC.Encryption.Threefish with pure is
    use type System.Bit_Order;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes);
    -- Reverses the bytes of List
 
    function Word_From_Bytes (List : in Word_As_Bytes) return Word is
-      function To_Word is new Ada.Unchecked_Conversion (Source => Word_As_Bytes, Target => Word);
-
       Local : Word_As_Bytes := List;
    begin -- Word_From_Bytes
       if System.Default_Bit_Order = System.High_Order_First then
          Reverse_Bytes (List => Local);
       end if;
 
-      return To_Word (Local);
+      b1 :
+      declare
+         proxy_word  :  Word;
+         for proxy_word'Address  use Local'Address;
+         
+         tmp_word    :  constant Word  := proxy_word;
+      begin
+         return tmp_word;
+      end b1;
    end Word_From_Bytes;
 
+
    function Bytes_From_Word (Value : in Word) return Word_As_Bytes is
-      function To_Bytes is new Ada.Unchecked_Conversion (Source => Word, Target => Word_As_Bytes);
-
-      Result : Word_As_Bytes := To_Bytes (Value);
+      Local :  Word  := Value;
    begin -- Bytes_From_Word
-      if System.Default_Bit_Order = System.High_Order_First then
-         Reverse_Bytes (List => Result);
-      end if;
+      b1 :
+      declare
+         proxy_word_as_bytes     :  Word_As_Bytes;
+         for proxy_word_as_bytes'Address  use Local'Address;
 
-      return Result;
+         tmp_word_as_bytes       :  Word_As_Bytes  := proxy_word_as_bytes;
+      begin
+         if System.Default_Bit_Order = System.High_Order_First then
+            Reverse_Bytes (List => tmp_word_as_bytes);
+         end if;
+         
+         return tmp_word_as_bytes;
+      end b1;
    end Bytes_From_Word;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes) is
