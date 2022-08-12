@@ -1,0 +1,52 @@
+
+project pragmarc is
+
+  -- this gnat project respect https://github.com/jrcarter/Coding_Standard
+
+  -- some warnings are harmless.
+
+  -- use to build:
+  -- gprbuild -p -P pragmarc <enter>
+  -- or
+  -- gnatmake -p -P pragmarc <enter>
+  -- 
+  -- use to clean:
+  -- gprclean -P pragmarc <enter>
+  -- 
+  -- Enjoy!!
+
+  for Languages use ("Ada");
+
+  for Source_Dirs use (".");
+  for Object_dir  use "common/obj";
+  for Exec_Dir use "common/bin";
+  for main use ("compile_all", "tf_test.adb", "tf_test_512.adb", "tf_test_1024.adb");
+
+  type Mode_type is ("debug", "release");
+  Modu : Mode_type := external ("mod", "release");
+
+  package Builder is
+  end Builder;
+
+  package Compiler is
+    case Modu is
+      when "debug" =>
+        for switches ("Ada")
+          use ("-Og", "-g", "-gnat2012", "-gnateE", "-gnatef", "-gnateV", "-gnatf", "-gnaty3befhiklM131prst", "-gnatwa");
+
+      when "release" =>
+        for switches ("Ada")
+          use ("-O3", "-gnat2012", "-gnateE", "-gnatef", "-gnateV", "-gnatf", "-gnaty3befhiklM131prst", "-gnatwa");
+      end case;
+  end compiler;
+
+  package Binder is
+  end Binder;
+
+  package Linker is
+  end Linker;
+
+  package Install is
+  end Install;
+
+end pragmarc;
