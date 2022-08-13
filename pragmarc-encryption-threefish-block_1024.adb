@@ -5,7 +5,7 @@
 --
 -- 2022 Feb 01     D. Norte de Moraes     V1.0--Initial 1024-bit version derived from 256-bit version
 --
-package body PragmARC.Encryption.Threefish.Block_1024 is
+package body PragmARC.Encryption.Threefish.Block_1024 with Preelaborate is
    use type Word;
 
    procedure Create_Key_Schedule (Key : in Block; Tweak : in Couple; Key_Schedule : out Key_Schedule_Handle) is

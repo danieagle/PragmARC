@@ -7,7 +7,7 @@
 --
 -- 2022 Feb 01     D. Norte de Moraes     V1.0--Initial 1024-bit version derived from 256-bit version
 --
-package PragmARC.Encryption.Threefish.Block_1024 is
+package PragmARC.Encryption.Threefish.Block_1024 with Preelaborate is
    Num_Words : constant := 16; -- A block is Num_Words words
 
    subtype Block  is Word_List (0 .. Num_Words - 1);
