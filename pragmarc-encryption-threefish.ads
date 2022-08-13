@@ -29,14 +29,14 @@ package PragmARC.Encryption.Threefish with pure is
    -- 1) Endian-independent conversion.
    -- 2) This is a pure function because always return the same value.
    -- 3) Compiled programs will return the same value for the _same system_
-   --       regardless of whether the system is big endian or lillte endian.
+   --       regardless of whether the system is big endian or little endian.
    -- Enjoy!!
 
    function Bytes_From_Word (Value : in Word) return Word_As_Bytes;
    -- 1) Endian-independent conversion.
    -- 2) This is a pure function because always return the same value.
    -- 3) Compiled programs will return the same value for the _same system_
-   --       regardless of whether the system is big endian or lillte endian.
+   --       regardless of whether the system is big endian or littte endian.
    -- Enjoy!!
 
 end PragmARC.Encryption.Threefish;
