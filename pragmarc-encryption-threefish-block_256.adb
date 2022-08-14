@@ -7,7 +7,7 @@
 -- 2021 May 01     J. Carter     V1.1--Adhere to coding standard
 -- 2021 Feb 01     J. Carter     V1.0--Initial PragmARC version
 --
-package body PragmARC.Encryption.Threefish.Block_256 with Preelaborate is
+package body PragmARC.Encryption.Threefish.Block_256 is
    use type Word;
 
    procedure Create_Key_Schedule (Key : in Block; Tweak : in Couple; Key_Schedule : out Key_Schedule_Handle) is
