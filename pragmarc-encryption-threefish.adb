@@ -25,32 +25,25 @@ package body PragmARC.Encryption.Threefish with pure is
 
       b1 :
       declare
-         proxy_word  :  Word;
-         for proxy_word'Address  use Local'Address;
+         proxy_word  :  Word
+            with Import, Convention => Ada, Address => Local'Address;
          
-         tmp_word    :  constant Word  := proxy_word;
       begin
-         return tmp_word;
+         return proxy_word;
       end b1;
    end Word_From_Bytes;
 
 
    function Bytes_From_Word (Value : in Word) return Word_As_Bytes is
       Local :  Word  := Value;
+      proxy_word_as_bytes     :  Word_As_Bytes
+            with Import, Convention => Ada, Address => Local'Address;
    begin -- Bytes_From_Word
-      b1 :
-      declare
-         proxy_word_as_bytes     :  Word_As_Bytes;
-         for proxy_word_as_bytes'Address  use Local'Address;
-
-         tmp_word_as_bytes       :  Word_As_Bytes  := proxy_word_as_bytes;
-      begin
-         if System.Default_Bit_Order = System.High_Order_First then
-            Reverse_Bytes (List => tmp_word_as_bytes);
-         end if;
-         
-         return tmp_word_as_bytes;
-      end b1;
+      if System.Default_Bit_Order = System.High_Order_First then
+         Reverse_Bytes (List => proxy_word_as_bytes);
+      end if;
+      
+      return proxy_word_as_bytes;
    end Bytes_From_Word;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes) is
