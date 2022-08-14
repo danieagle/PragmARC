@@ -10,7 +10,7 @@
 -- with Ada.Unchecked_Conversion;
 with System;
 
-package body PragmARC.Encryption.Threefish with pure is
+package body PragmARC.Encryption.Threefish is
    use type System.Bit_Order;
 
    procedure Reverse_Bytes (List : in out Word_As_Bytes);
