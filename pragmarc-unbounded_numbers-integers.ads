@@ -18,7 +18,7 @@ pragma Unsuppress (All_Checks);
 private with Ada.Containers.Vectors;
 private with System;
 
-package PragmARC.Unbounded_Numbers.Integers is
+package PragmARC.Unbounded_Numbers.Integers with Preelaborate is
    type Unbounded_Integer is private;
    -- Default initial value is zero
 
@@ -88,4 +88,12 @@ private -- PragmARC.Unbounded_Numbers.Integers
       Negative : Boolean    := False;
       Digit    : Digit_List := Single_Zero;
    end record;
+
+   function Zip return Unbounded_Integer
+      with Inline;
+
+   function One return Unbounded_Integer
+      with Inline;
+
+
 end PragmARC.Unbounded_Numbers.Integers;

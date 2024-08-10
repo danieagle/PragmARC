@@ -110,8 +110,19 @@ package body PragmARC.Unbounded_Numbers.Integers is
       return Integer (Big (Result) );
    end To_Integer;
 
-   Zip : constant Unbounded_Integer := To_Unbounded_Integer (0);
-   One : constant Unbounded_Integer := To_Unbounded_Integer (1);
+   function Zip return Unbounded_Integer
+   is
+      zip_tmp : constant Unbounded_Integer := To_Unbounded_Integer (0);
+   begin
+      return zip_tmp;
+   end Zip;
+
+   function One return Unbounded_Integer
+   is
+      one_tmp : constant Unbounded_Integer := To_Unbounded_Integer (1);
+   begin
+      return one_tmp;
+   end One;
 
    function "+" (Right : in Unbounded_Integer) return Unbounded_Integer is
       (Right);
