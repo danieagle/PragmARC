@@ -17,6 +17,28 @@ with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 
 package body PragmARC.Unbounded_Numbers.Rationals is
+
+
+   function UI0 return Unbounded_Integer
+   is
+      ui0_tmp : constant Unbounded_Integer := To_Unbounded_Integer (0);
+   begin
+      return ui0_tmp;
+   end UI0;
+
+   function UI1 return Unbounded_Integer
+   is
+      ui1_tmp : constant Unbounded_Integer := To_Unbounded_Integer (1);
+   begin
+      return ui1_tmp;
+   end UI1;
+
+   function Zero return Rational
+   is (Rational'(others => <>));
+
+   function One return Rational
+   is (Rational'(Numerator => UI1, Denominator => UI1));
+
    procedure Simplify (Value : in out Rational);
    -- Changes Value to have the smallest (absolute) values that represent the same rational number
    -- 2/4 becomes 1/2
@@ -295,4 +317,5 @@ package body PragmARC.Unbounded_Numbers.Rationals is
 
       Value := (Numerator => Value.Numerator / D, Denominator => Value.Denominator / D);
    end Simplify;
+
 end PragmARC.Unbounded_Numbers.Rationals;

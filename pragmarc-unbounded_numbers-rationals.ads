@@ -20,12 +20,15 @@ pragma Unsuppress (All_Checks);
 
 with PragmARC.Unbounded_Numbers.Integers;
 
-package PragmARC.Unbounded_Numbers.Rationals is
+package PragmARC.Unbounded_Numbers.Rationals with Preelaborate is
    type Rational is private;
    -- Default initial value is zero
 
-   Zero : constant Rational;
-   One  : constant Rational;
+   function Zero return Rational
+      with Inline;
+
+   function One return Rational
+      with Inline;
 
    function Compose (Numerator : in Integers.Unbounded_Integer; Denominator : in Integers.Unbounded_Integer) return Rational;
    -- Creates the value Numerator / Denominator
@@ -77,14 +80,15 @@ package PragmARC.Unbounded_Numbers.Rationals is
 private -- PragmARC.Unbounded_Numbers.Rationals
    use PragmARC.Unbounded_Numbers.Integers;
 
-   UI0 : constant Unbounded_Integer := To_Unbounded_Integer (0);
-   UI1 : constant Unbounded_Integer := To_Unbounded_Integer (1);
+   function UI0 return Unbounded_Integer
+      with Inline;
+
+   function UI1 return Unbounded_Integer
+      with Inline;
 
    type Rational is record
       Numerator   : Unbounded_Integer := UI0; -- Sign in Numerator
       Denominator : Unbounded_Integer := UI1;
    end record;
 
-   Zero : constant Rational := (others => <>);
-   One  : constant Rational := (Numerator => UI1, Denominator => UI1);
 end PragmARC.Unbounded_Numbers.Rationals;
