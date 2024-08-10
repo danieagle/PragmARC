@@ -56,5 +56,5 @@ private -- PragmARC.B_Strings
       Value : String (1 .. Max_Length) := (1 .. Max_Length => ' ');
    end record;
 
-   Null_B_String : constant B_String (Max_Length => 1) := (others => <>);
+   Null_B_String : constant B_String (Max_Length => 1) := (Max_Length => 1, others => <>);
 end PragmARC.B_Strings;
