@@ -59,7 +59,7 @@ generic -- PragmARC.Matching.Regular_Expression
    End_Set_Item     : Item;
 
    with function "=" (Left : in Item; Right : in Item) return Boolean is <>;
-package PragmARC.Matching.Regular_Expression is
+package PragmARC.Matching.Regular_Expression with Preelaborate is
    pragma Assert (Index'First = 1);
 
    Illegal_Pattern : exception; -- Raised when an invalid pattern is processed
