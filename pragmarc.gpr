@@ -1,0 +1,24 @@
+
+project pragmarc is
+
+   for main use ("compile_all");
+
+   for Source_Dirs use (".");
+   for Object_Dir use "obj";
+   for Create_Missing_Dirs use "True";
+
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnatyM137");
+
+   end Compiler;
+
+   package Binder is
+      for Switches ("Ada") use ("-Es"); --  Symbolic traceback
+   end Binder;
+
+   package Install is
+      for Artifacts (".") use ("share");
+   end Install;
+
+end pragmarc;
